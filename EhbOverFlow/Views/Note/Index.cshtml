@@ -1,5 +1,23 @@
-﻿@{
+﻿@model IEnumerable<Note>
+
+@{
 
 }
-<h1>All Notes</h1>
-<a role="button" class="btn btn-primary btn-lg" asp-controller="Note" asp-action="Create">Make Note</a>
+<div class="container">
+    <h1>All Notes</h1>
+    <a role="button" class="btn btn-primary btn-lg" asp-controller="Note" asp-action="Create">Make Note</a>
+    @foreach(var note in Model)
+    {
+        <div class="card" style="margin-top: 25px">
+            <div class="card-header">
+                @note.Title
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">@note.Body</h5>
+                <p class="card-text text-muted">@note.CreatedDate</p>
+                <a class="btn btn-primary" asp-controller="Note" asp-action="Details" asp-route-id="@note.Id">Check Note</a>
+                <a class="btn btn-secondary" asp-controller="Note" asp-action="Create" asp-route-id="@note.Id">Edit Note</a>
+            </div>
+        </div>
+    }
+</div>

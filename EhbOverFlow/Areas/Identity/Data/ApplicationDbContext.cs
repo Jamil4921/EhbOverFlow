@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using EhbOverFlow.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -10,5 +11,7 @@ namespace EhbOverFlow.Areas.Identity.Data
             : base(options)
         {
         }
+
+        public DbSet<Note> notes { get; set; }
     }
 }

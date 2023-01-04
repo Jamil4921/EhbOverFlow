@@ -1,5 +1,6 @@
 using EhbOverFlow.Areas.Identity.Data;
 using EhbOverFlow.Data;
+using EhbOverFlow.Data.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,6 +37,8 @@ builder.Services.Configure<IdentityOptions>(options =>
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
     options.User.RequireUniqueEmail = false;
 });
+
+builder.Services.AddScoped<INoteRepository, NoteRepository>();
 
 var app = builder.Build();
 
