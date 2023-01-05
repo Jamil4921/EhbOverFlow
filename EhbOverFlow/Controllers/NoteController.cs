@@ -108,5 +108,15 @@ namespace EhbOverFlow.Controllers
             await _ehbOverFlowNote.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Solved(int id)
+        {
+            var note = _ehbOverFlowNote.GetNote(id);
+            note.Solved = true;
+            await _ehbOverFlowNote.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
     }
 }

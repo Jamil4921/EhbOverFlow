@@ -4,13 +4,17 @@
 
 }
 
-@*<p>@Model.CreatedDate</p>
-<h1>@Model.Title</h1>
-<p>@Model.Body</p>*@
+
 
 <div class="container">
     <div class="card mb-3">
         <div class="card-body">
+            @if(Model.Solved == false)
+            {
+                <small class="text-danger">This post is still unsolved</small>
+            }else{
+                <small class="text-success">This post is solved</small>
+            }
             <p class="card-text"><small class="text-muted">@Model.CreatedDate</small></p>
             <h5 class="card-title">@Model.Title</h5>
             <p class="card-text">@Model.Body</p>

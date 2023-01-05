@@ -16,6 +16,7 @@ namespace EhbOverFlow.Models
         public string Body { get; set; } = "";
 
         public DateTime? CreatedDate { get; set; } = DateTime.Now;
+        public bool Solved { get; set; } = false;
 
         public string? UserId { get; set; }
         public ApplicationUser? User { get; set; }

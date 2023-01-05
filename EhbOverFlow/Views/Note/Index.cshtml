@@ -11,9 +11,15 @@
     {
         <div class="card" style="margin-top: 25px">
             <div class="card-header">
-                @note.Title
+                <h2>@note.Title</h2>
             </div>
             <div class="card-body">
+                   @if(note.Solved == false)
+                        {
+                            <small class="text-danger">This post is still unsolved</small>
+                        }else{
+                             <small class="text-success">This post is solved</small>
+                        }
                 <h5 class="card-title">Created by: @note.User.UserName</h5>
                 <h5 class="card-title">@note.Body</h5>
                 <p class="card-text text-muted">@note.CreatedDate</p>
@@ -30,7 +36,15 @@
                         <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" asp-controller="Note" asp-action="Create" asp-route-id="@note.Id">Edit Note</a></li>
                                 <li> <a class="dropdown-item" asp-controller="Note" asp-action="Remove" asp-route-id="@note.Id">Delete Note</a></li>
-                            </ul>
+                            @if(note.Solved == false)
+                            {
+                                 <li>
+                                    <a class="dropdown-item" asp-controller="Note" asp-action="Solved" asp-route-id="@note.Id">This question is solved</a>
+                                </li> 
+                            }
+                          
+                             
+                        </ul>
                     </div>
                 }
             </div>
