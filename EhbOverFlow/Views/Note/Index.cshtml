@@ -14,6 +14,7 @@
                 @note.Title
             </div>
             <div class="card-body">
+                <h5 class="card-title">Created by: @note.User.UserName</h5>
                 <h5 class="card-title">@note.Body</h5>
                 <p class="card-text text-muted">@note.CreatedDate</p>
                 <a class="btn btn-primary" asp-controller="Note" asp-action="Details" asp-route-id="@note.Id">Check Note</a>

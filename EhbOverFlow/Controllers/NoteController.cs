@@ -31,7 +31,7 @@ namespace EhbOverFlow.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             ViewData["UserId"] = user.Id;
 
-            return View(await _context.notes.ToListAsync());
+            return View(await _context.notes.Include(n => n.User).ToListAsync());
         }
         [HttpGet]
         public IActionResult Details(int id)
