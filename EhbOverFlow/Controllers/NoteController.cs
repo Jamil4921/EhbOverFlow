@@ -26,6 +26,7 @@ namespace EhbOverFlow.Controllers
             _userManager = userManager;
 
         }
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
@@ -97,6 +98,15 @@ namespace EhbOverFlow.Controllers
                 return View(note);
             }
             
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Remove(int id)
+        {
+            _ehbOverFlowNote.RemoveNote(id);
+            await _ehbOverFlowNote.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
     }
 }

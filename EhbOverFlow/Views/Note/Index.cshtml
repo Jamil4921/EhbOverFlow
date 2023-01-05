@@ -22,7 +22,16 @@
               
                 @if (note.UserId == (string)ViewData["UserId"])
                 {
-                    <a class="btn btn-secondary" asp-controller="Note" asp-action="Create" asp-route-id="@note.Id">Edit Note</a>
+
+                    <div class="dropdown" style="margin-top: 1rem">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Edit Note
+                        </button>
+                        <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-controller="Note" asp-action="Create" asp-route-id="@note.Id">Edit Note</a></li>
+                                <li> <a class="dropdown-item" asp-controller="Note" asp-action="Remove" asp-route-id="@note.Id">Delete Note</a></li>
+                            </ul>
+                    </div>
                 }
             </div>
         </div>
