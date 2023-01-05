@@ -1,7 +1,12 @@
 ﻿using EhbOverFlow.Areas.Identity.Data;
 using EhbOverFlow.Data.Repository;
 using EhbOverFlow.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+using System.Security.Claims;
 
 namespace EhbOverFlow.Controllers
 {
@@ -10,16 +15,23 @@ namespace EhbOverFlow.Controllers
         private readonly ILogger<HomeController> _logger;
         private INoteRepository _ehbOverFlowNote;
 
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public NoteController(ILogger<HomeController> logger, INoteRepository ehbOverFlowNote)
+        public NoteController(ILogger<HomeController> logger, INoteRepository ehbOverFlowNote, ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _logger = logger;
             _ehbOverFlowNote = ehbOverFlowNote;
+            _context = context;
+            _userManager = userManager;
+
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var notes = _ehbOverFlowNote.GetAllNotes();
-            return View(notes);
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            ViewData["UserId"] = user.Id;
+
+            return View(await _context.notes.ToListAsync());
         }
         [HttpGet]
         public IActionResult Details(int id)
@@ -29,34 +41,53 @@ namespace EhbOverFlow.Controllers
         }
 
         [HttpGet]
+        [Authorize]
+
         public IActionResult Create(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return View(new Note());
             }
             else
             {
+   
                 var note = _ehbOverFlowNote.GetNote((int)id);
+               
+               
                 return View(note);
             }
+
             
+
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Note note)
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,Title,Body,CreatedDate")] Note note)
         {
-            if(note.Id > 0)
+           
+
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            
+            note.User = user;
+
+            if (note.Id > 0)
             {
                 _ehbOverFlowNote.UpdateNote(note);
             }
             else
             {
+                if(user.Notes == null)
+                {
+                    user.Notes = new List<Note>();
+                }
+                user.Notes.Add(note);
                 _ehbOverFlowNote.AddNote(note);
+
             }
 
-
-           
             if(await _ehbOverFlowNote.SaveChangesAsync())
             {
                 return RedirectToAction("Index");
@@ -65,6 +96,7 @@ namespace EhbOverFlow.Controllers
             {
                 return View(note);
             }
+            
         }
     }
 }

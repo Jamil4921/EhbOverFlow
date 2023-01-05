@@ -10,12 +10,14 @@ namespace EhbOverFlow.Controllers
 	{
 		private readonly ILogger<HomeController> _logger;
 		private INoteRepository _ehbOverFlowNote;
+
 		
 
 		public HomeController(ILogger<HomeController> logger, INoteRepository ehbOverFlowNote)
 		{
 			_logger = logger;
 			_ehbOverFlowNote = ehbOverFlowNote;
+
 		}
 
 		public IActionResult Index()

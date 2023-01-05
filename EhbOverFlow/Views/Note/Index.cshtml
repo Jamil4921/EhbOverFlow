@@ -1,7 +1,8 @@
-﻿@model IEnumerable<Note>
+﻿@model IEnumerable<Note> 
+
 
 @{
-
+    
 }
 <div class="container">
     <h1>All Notes</h1>
@@ -16,7 +17,12 @@
                 <h5 class="card-title">@note.Body</h5>
                 <p class="card-text text-muted">@note.CreatedDate</p>
                 <a class="btn btn-primary" asp-controller="Note" asp-action="Details" asp-route-id="@note.Id">Check Note</a>
-                <a class="btn btn-secondary" asp-controller="Note" asp-action="Create" asp-route-id="@note.Id">Edit Note</a>
+
+              
+                @if (note.UserId == (string)ViewData["UserId"])
+                {
+                    <a class="btn btn-secondary" asp-controller="Note" asp-action="Create" asp-route-id="@note.Id">Edit Note</a>
+                }
             </div>
         </div>
     }
