@@ -1,5 +1,6 @@
 using EhbOverFlow.Areas.Identity.Data;
 using EhbOverFlow.Data;
+using EhbOverFlow.Data.FileManager;
 using EhbOverFlow.Data.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +40,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 });
 
 builder.Services.AddScoped<INoteRepository, NoteRepository>();
+builder.Services.AddScoped<IFileManager, FileManager>();
 
 var app = builder.Build();
 

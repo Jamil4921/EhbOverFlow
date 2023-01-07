@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 
-namespace EhbOverFlow.Models
+namespace EhbOverFlow.ViewModels
 {
-    public class Note
+    public class NoteViewModel
     {
 
         public int Id { get; set; }
@@ -17,10 +17,14 @@ namespace EhbOverFlow.Models
 
         public DateTime? CreatedDate { get; set; } = DateTime.Now;
         public bool Solved { get; set; } = false;
-        public string Image { get; set; } = "";
+        public IFormFile Image { get; set; } = null;
 
         public string? UserId { get; set; }
         public ApplicationUser? User { get; set; }
 
+        public NoteViewModel()
+        {
+            User = new ApplicationUser();
+        }
     }
 }
