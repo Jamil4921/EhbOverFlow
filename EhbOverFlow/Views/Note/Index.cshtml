@@ -8,6 +8,11 @@
     <h1>All Notes</h1>
     <a role="button" class="btn btn-primary btn-lg" asp-controller="Note" asp-action="Create">Make Note</a>
 
+    <form method="get" asp-action="Index" asp-controller="Note">
+        <input style="margin-top: 30px" type="search" placeholder="Search Note" value="@ViewData["GetTitleNote"]" name="searchField"/>
+        <input type="submit" value="search"/>
+    </form>
+
     <div class="dropdown" style="margin-top: 30px">
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             Sort By

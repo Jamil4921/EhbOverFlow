@@ -32,12 +32,20 @@ namespace EhbOverFlow.Controllers
         }
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Index(string sort)
+        public async Task<IActionResult> Index(string sort, string searchField)
         {
             
             var user = await _userManager.GetUserAsync(HttpContext.User);
             ViewData["UserId"] = user.Id;
 
+            ViewData["GetTitleNote"] = searchField;
+            var noteQuery = from n in _context.notes select n;
+
+            if (!String.IsNullOrEmpty(searchField))
+            {
+                noteQuery = noteQuery.Where(n => n.Title.Contains(searchField) || n.Body.Contains(searchField)).Include(n => n.User);
+                return View(await noteQuery.AsNoTracking().ToListAsync());
+            }
 
             IQueryable<Note> notes;
             if (sort == "solved")
