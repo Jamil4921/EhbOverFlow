@@ -38,6 +38,21 @@ namespace EhbOverFlow.Controllers
 
             return View(await _context.notes.Include(n => n.User).ToListAsync());
         }
+
+        public async Task<IActionResult> Solved(string sort)
+        {
+            IQueryable<Note> notes;
+            if (sort == "solved")
+            {
+                notes = _context.notes.Where(n => n.Solved == true);
+            }
+            else
+            {
+                notes = _context.notes;
+            }
+            return View(await notes.ToListAsync());
+        }
+
         [HttpGet]
         public IActionResult Details(int id)
         {
@@ -65,6 +80,7 @@ namespace EhbOverFlow.Controllers
                     Title = note.Title,
                     Body = note.Body,
                     Solved = note.Solved,
+                    CurrentImage = note.Image,
                     UserId = note.UserId,
                     User = note.User
                 });
@@ -86,14 +102,25 @@ namespace EhbOverFlow.Controllers
                 Title = nvm.Title,
                 Body = nvm.Body,
                 Solved = nvm.Solved,
-                Image = await _fileManager.SaveImage(nvm.Image)
+                
             };
 
             
+       
+            if(nvm.Image == null)
+            {
+                note.Image = nvm.CurrentImage;
+            }
+            else
+            {
+                note.Image = await _fileManager.SaveImage(nvm.Image);
+            }
+
             var user = await _userManager.GetUserAsync(HttpContext.User);
 
-           
+
             note.User = user;
+
 
             if (note.Id > 0)
             {

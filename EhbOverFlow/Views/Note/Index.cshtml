@@ -7,6 +7,16 @@
 <div class="container">
     <h1>All Notes</h1>
     <a role="button" class="btn btn-primary btn-lg" asp-controller="Note" asp-action="Create">Make Note</a>
+
+    <div class="dropdown" style="margin-top: 30px">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Sort By
+        </button>
+        <ul class="dropdown-menu">
+            <li><a asp-controller="Note" asp-action="Index" asp-route-sort="solved" class="dropdown-item">Solved Notes</a></li>
+        </ul>
+    </div>
+
     @foreach(var note in Model)
     {
         <div class="card" style="margin-top: 25px">
