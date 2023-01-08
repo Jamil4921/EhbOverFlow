@@ -30,28 +30,49 @@ namespace EhbOverFlow.Controllers
             _fileManager = fileManager;
 
         }
+        [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sort)
         {
+            
             var user = await _userManager.GetUserAsync(HttpContext.User);
             ViewData["UserId"] = user.Id;
 
-            return View(await _context.notes.Include(n => n.User).ToListAsync());
-        }
 
-        public async Task<IActionResult> Solved(string sort)
-        {
             IQueryable<Note> notes;
             if (sort == "solved")
             {
-                notes = _context.notes.Where(n => n.Solved == true);
+                notes = _context.notes.Where(n => n.Solved == true).Include(n => n.User);
+                return View(await notes.ToListAsync());
             }
+
+            if (sort == "unsolved")
+            {
+                notes = _context.notes.Where(n => n.Solved == false).Include(n => n.User);
+                return View(await notes.ToListAsync());
+            }
+
+            if (sort == "allnotes")
+            {
+                notes = _context.notes.Include(n => n.User);
+                return View(await notes.ToListAsync());
+            }
+
+            if (sort == "recent")
+            {
+                notes = _context.notes.Include(n => n.User).OrderByDescending(n => n.CreatedDate);
+                return View(await notes.ToListAsync());
+            }
+
             else
             {
                 notes = _context.notes;
             }
-            return View(await notes.ToListAsync());
+            return View(await _context.notes.Include(n => n.User).ToListAsync());
+
         }
+
+     
 
         [HttpGet]
         public IActionResult Details(int id)
@@ -62,9 +83,11 @@ namespace EhbOverFlow.Controllers
 
         [HttpGet]
         [Authorize]
-
+ 
         public IActionResult Create(int? id)
         {
+
+            
             if (id == null)
             {
                 return View(new NoteViewModel());
@@ -86,8 +109,6 @@ namespace EhbOverFlow.Controllers
                 });
             }
 
-            
-
         }
 
         [HttpPost]
@@ -102,6 +123,7 @@ namespace EhbOverFlow.Controllers
                 Title = nvm.Title,
                 Body = nvm.Body,
                 Solved = nvm.Solved,
+                UserName = nvm.UserName
                 
             };
 

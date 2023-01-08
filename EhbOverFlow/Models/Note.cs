@@ -19,6 +19,7 @@ namespace EhbOverFlow.Models
         public bool Solved { get; set; } = false;
         public string Image { get; set; } = "";
 
+        public string UserName { get; set; } = "";
         public string? UserId { get; set; }
         public ApplicationUser? User { get; set; }
 

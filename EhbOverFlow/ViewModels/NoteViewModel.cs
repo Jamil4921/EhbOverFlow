@@ -18,6 +18,7 @@ namespace EhbOverFlow.ViewModels
         public DateTime? CreatedDate { get; set; } = DateTime.Now;
         public bool Solved { get; set; } = false;
         public string CurrentImage { get; set; } = "";
+        public string UserName { get; set; } = "";
         public IFormFile Image { get; set; } = null;
 
         public string? UserId { get; set; }
@@ -25,7 +26,9 @@ namespace EhbOverFlow.ViewModels
 
         public NoteViewModel()
         {
+            
             User = new ApplicationUser();
+            
         }
     }
 }

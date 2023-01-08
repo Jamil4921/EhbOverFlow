@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EhbOverFlow.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230105210648_Added_Solved_TO_Note")]
-    partial class Added_Solved_TO_Note
+    [Migration("20230108005223_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -112,6 +112,10 @@ namespace EhbOverFlow.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("Solved")
                         .HasColumnType("bit");
 
@@ -121,6 +125,10 @@ namespace EhbOverFlow.Migrations
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
