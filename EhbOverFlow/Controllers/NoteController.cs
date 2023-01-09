@@ -125,6 +125,7 @@ namespace EhbOverFlow.Controllers
         public async Task<IActionResult> Create([Bind("Id,Title,Body,CreatedDate,Image")] NoteViewModel nvm)
         {
 
+
             var note = new Note
             {
                 Id = nvm.Id,
