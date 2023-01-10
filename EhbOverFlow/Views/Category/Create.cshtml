@@ -1,0 +1,16 @@
+﻿@model Category
+
+@{
+
+}
+
+<div class="container">
+    <form asp-controller="Category" asp-action="Create" method="post">
+        <input asp-for="Id" type="hidden" />
+        <div class="mb-3">
+            <label class="form-label">Subject name</label>
+            <input asp-for="SubjectName" class="form-control">
+        </div>
+        <input type="submit" class="btn btn-primary" value="Submit" />
+    </form>
+</div>

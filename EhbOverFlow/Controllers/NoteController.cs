@@ -16,19 +16,19 @@ namespace EhbOverFlow.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private INoteRepository _ehbOverFlowNote;
-
+        private ICategoryRepository _ehbOverFlowCategory;
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IFileManager _fileManager;
 
-        public NoteController(ILogger<HomeController> logger, INoteRepository ehbOverFlowNote, ApplicationDbContext context, UserManager<ApplicationUser> userManager, IFileManager fileManager)
+        public NoteController(ILogger<HomeController> logger, INoteRepository ehbOverFlowNote, ApplicationDbContext context, UserManager<ApplicationUser> userManager, IFileManager fileManager, ICategoryRepository ehbOverFlowCategory)
         {
             _logger = logger;
             _ehbOverFlowNote = ehbOverFlowNote;
             _context = context;
             _userManager = userManager;
             _fileManager = fileManager;
-
+            _ehbOverFlowCategory=ehbOverFlowCategory;
         }
         [HttpGet]
         [Authorize]
