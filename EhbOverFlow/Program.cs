@@ -41,6 +41,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 builder.Services.AddScoped<INoteRepository, NoteRepository>();
 builder.Services.AddScoped<IFileManager, FileManager>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 var app = builder.Build();
 
