@@ -11,7 +11,7 @@ using System.Data;
 
 namespace EhbOverFlow.Controllers
 {
-    [Authorize(Roles = "UserAdministrator")]
+    
     public class CategoryController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -30,9 +30,16 @@ namespace EhbOverFlow.Controllers
             _fileManager = fileManager;
             _ehbOverFlowCategory=ehbOverFlowCategory;
         }
-
+        [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Index()
         {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var isAdmin = await _userManager.IsInRoleAsync(user, "UserAdministrator");
+
+            ViewData["IsAdmin"] = isAdmin;
+
+
             var categories = _ehbOverFlowCategory.GetAllCategories();
             return View(await _context.Categories.ToListAsync());
         }
@@ -44,7 +51,8 @@ namespace EhbOverFlow.Controllers
             return View(category);
         }
 
-        [HttpPost]
+        [HttpGet]
+        [Authorize(Roles = "UserAdministrator")]
         public IActionResult Create(int? id)
         {
 
@@ -61,6 +69,40 @@ namespace EhbOverFlow.Controllers
                 return View(category);
             }
 
+        }
+        [HttpPost]
+        [Authorize(Roles = "UserAdministrator")]
+        public async Task<IActionResult> Create([Bind("Id,SubjectName")] Category category)
+        {
+
+            if(category.Id > 0)
+            {
+                _ehbOverFlowCategory.UpdateCategory(category);
+            }
+            else
+            {
+                _ehbOverFlowCategory.AddCategory(category);
+            }
+
+            
+            if(await _ehbOverFlowCategory.SaveChangesAsync())
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(category);
+            }
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Remove(int id)
+        {
+
+            _ehbOverFlowCategory.RemoveCategory(id);
+            await _ehbOverFlowCategory.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
     }
 }

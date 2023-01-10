@@ -37,6 +37,7 @@ namespace EhbOverFlow.Controllers
             
             var user = await _userManager.GetUserAsync(HttpContext.User);
             ViewData["UserId"] = user.Id;
+            
 
             ViewData["GetTitleNote"] = searchField;
             var noteQuery = from n in _context.notes select n;

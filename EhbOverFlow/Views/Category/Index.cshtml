@@ -14,6 +14,19 @@
             <h5 class="card-title">@category.SubjectName</h5>
             <h6 class="card-subtitle mb-2 text-muted">Check all Notes with this category</h6>
             <a role="button" class="btn btn-primary" asp-controller="Category" asp-action="Details">Check Category</a>
+            @if (ViewData["IsAdmin"] != null && (bool)ViewData["IsAdmin"])
+            {
+                <div class="dropdown" style="margin-top: 1rem">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Edit Category
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-controller="Category" asp-action="Create" asp-route-id="@category.Id">Edit Category</a></li>
+                        <li> <a class="dropdown-item" asp-controller="Category" asp-action="Remove" asp-route-id="@category.Id">Delete Category</a></li>
+                    </ul>
+                </div>
+               
+            }
         </div>
     </div>
 }
