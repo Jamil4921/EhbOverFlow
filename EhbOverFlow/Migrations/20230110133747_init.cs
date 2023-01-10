@@ -51,6 +51,19 @@ namespace EhbOverFlow.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SubjectName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -168,7 +181,8 @@ namespace EhbOverFlow.Migrations
                     Solved = table.Column<bool>(type: "bit", nullable: false),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CategoryId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -177,6 +191,11 @@ namespace EhbOverFlow.Migrations
                         name: "FK_notes_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_notes_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
                         principalColumn: "Id");
                 });
 
@@ -220,6 +239,11 @@ namespace EhbOverFlow.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_notes_CategoryId",
+                table: "notes",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_notes_UserId",
                 table: "notes",
                 column: "UserId");
@@ -250,6 +274,9 @@ namespace EhbOverFlow.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
         }
     }
 }

@@ -95,6 +95,23 @@ namespace EhbOverFlow.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("EhbOverFlow.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("SubjectName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("EhbOverFlow.Models.Note", b =>
                 {
                     b.Property<int>("Id")
@@ -106,6 +123,9 @@ namespace EhbOverFlow.Migrations
                     b.Property<string>("Body")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -129,6 +149,8 @@ namespace EhbOverFlow.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("UserId");
 
@@ -274,9 +296,15 @@ namespace EhbOverFlow.Migrations
 
             modelBuilder.Entity("EhbOverFlow.Models.Note", b =>
                 {
+                    b.HasOne("EhbOverFlow.Models.Category", "Category")
+                        .WithMany("CatNotes")
+                        .HasForeignKey("CategoryId");
+
                     b.HasOne("EhbOverFlow.Areas.Identity.Data.ApplicationUser", "User")
                         .WithMany("Notes")
                         .HasForeignKey("UserId");
+
+                    b.Navigation("Category");
 
                     b.Navigation("User");
                 });
@@ -335,6 +363,11 @@ namespace EhbOverFlow.Migrations
             modelBuilder.Entity("EhbOverFlow.Areas.Identity.Data.ApplicationUser", b =>
                 {
                     b.Navigation("Notes");
+                });
+
+            modelBuilder.Entity("EhbOverFlow.Models.Category", b =>
+                {
+                    b.Navigation("CatNotes");
                 });
 #pragma warning restore 612, 618
         }

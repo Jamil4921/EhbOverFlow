@@ -15,6 +15,7 @@ namespace EhbOverFlow.Areas.Identity.Data
         }
 
         public DbSet<Note> notes { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,6 +25,11 @@ namespace EhbOverFlow.Areas.Identity.Data
                 .HasOne(n => n.User)
                 .WithMany(n => n.Notes)
                 .HasForeignKey(n => n.UserId);
+
+            modelBuilder.Entity<Category>()
+            .HasMany(c => c.CatNotes)
+            .WithOne(n => n.Category)
+            .HasForeignKey(n => n.CategoryId);
         }
 
     }
