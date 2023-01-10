@@ -39,6 +39,7 @@
                              <small class="text-success">This post is solved</small>
                         }
                 <h5 class="card-title">Created by: @note.User.FirstName</h5>
+                <h5 class="card-title">Category: @note.Category?.SubjectName</h5>
                 <h5 class="card-title">@note.Body</h5>
                 <p class="card-text text-muted">@note.CreatedDate</p>
                 <a class="btn btn-primary" asp-controller="Note" asp-action="Details" asp-route-id="@note.Id">Check Note</a>

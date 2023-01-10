@@ -20,6 +20,12 @@
             <input asp-for="CurrentImage" type="hidden">
             <input asp-for="Image" class="form-control">
         </div>
+        <div class="mb-3">
+            <label class="form-label">Add Category</label>
+            <label asp-for="CategoryId" class="control-label"></label>
+            <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+        </div>
         <input type="submit" class="btn btn-primary" value="Submit"/>
     </form>
 </div>
+

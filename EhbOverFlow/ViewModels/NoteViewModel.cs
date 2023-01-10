@@ -1,4 +1,5 @@
 ﻿using EhbOverFlow.Areas.Identity.Data;
+using EhbOverFlow.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 
@@ -23,6 +24,9 @@ namespace EhbOverFlow.ViewModels
 
         public string? UserId { get; set; }
         public ApplicationUser? User { get; set; }
+
+        public int? CategoryId { get; set; }
+        public Category? Category { get; set; }
 
         public NoteViewModel()
         {

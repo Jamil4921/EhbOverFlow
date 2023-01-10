@@ -6,6 +6,7 @@ using EhbOverFlow.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
@@ -44,32 +45,32 @@ namespace EhbOverFlow.Controllers
 
             if (!String.IsNullOrEmpty(searchField))
             {
-                noteQuery = noteQuery.Where(n => n.Title.Contains(searchField) || n.Body.Contains(searchField)).Include(n => n.User);
+                noteQuery = noteQuery.Where(n => n.Title.Contains(searchField) || n.Body.Contains(searchField)).Include(n => n.User).Include(c => c.Category);
                 return View(await noteQuery.AsNoTracking().ToListAsync());
             }
 
             IQueryable<Note> notes;
             if (sort == "solved")
             {
-                notes = _context.notes.Where(n => n.Solved == true).Include(n => n.User);
+                notes = _context.notes.Where(n => n.Solved == true).Include(n => n.User).Include(c => c.Category);
                 return View(await notes.ToListAsync());
             }
 
             if (sort == "unsolved")
             {
-                notes = _context.notes.Where(n => n.Solved == false).Include(n => n.User);
+                notes = _context.notes.Where(n => n.Solved == false).Include(n => n.User).Include(c => c.Category);
                 return View(await notes.ToListAsync());
             }
 
             if (sort == "allnotes")
             {
-                notes = _context.notes.Include(n => n.User);
+                notes = _context.notes.Include(n => n.User).Include(c => c.Category);
                 return View(await notes.ToListAsync());
             }
 
             if (sort == "recent")
             {
-                notes = _context.notes.Include(n => n.User).OrderByDescending(n => n.CreatedDate);
+                notes = _context.notes.Include(n => n.User).OrderByDescending(n => n.CreatedDate).Include(c => c.Category);
                 return View(await notes.ToListAsync());
             }
 
@@ -77,7 +78,7 @@ namespace EhbOverFlow.Controllers
             {
                 notes = _context.notes;
             }
-            return View(await _context.notes.Include(n => n.User).ToListAsync());
+            return View(await _context.notes.Include(n => n.User).Include(c =>c.Category).ToListAsync());
 
         }
 
@@ -92,11 +93,14 @@ namespace EhbOverFlow.Controllers
 
         [HttpGet]
         [Authorize]
+
+
  
         public IActionResult Create(int? id)
         {
+            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "SubjectName");
+            var selectedCategory = _context.Categories.Find(id);
 
-            
             if (id == null)
             {
                 return View(new NoteViewModel());
@@ -114,7 +118,8 @@ namespace EhbOverFlow.Controllers
                     Solved = note.Solved,
                     CurrentImage = note.Image,
                     UserId = note.UserId,
-                    User = note.User
+                    User = note.User,
+                    CategoryId = selectedCategory?.Id
                 });
             }
 
@@ -123,9 +128,9 @@ namespace EhbOverFlow.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Body,CreatedDate,Image")] NoteViewModel nvm)
+        public async Task<IActionResult> Create([Bind("Id,Title,Body,CreatedDate,Image,CategoryId")] NoteViewModel nvm)
         {
-
+            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "SubjectName");
 
             var note = new Note
             {
@@ -133,9 +138,11 @@ namespace EhbOverFlow.Controllers
                 Title = nvm.Title,
                 Body = nvm.Body,
                 Solved = nvm.Solved,
-                UserName = nvm.UserName
-                
-            };
+                UserName = nvm.UserName,
+                CategoryId = nvm.CategoryId
+
+
+        };
 
             
        
