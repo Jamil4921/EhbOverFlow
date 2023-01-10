@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Note> 
+
+
+
+@{
+
+}
+
+@foreach (var note in Model)
+{
+    <div class="card" style="margin-top: 25px">
+        <div class="card-header">
+            <h2>@note.Title</h2>
+        </div>
+        <div class="card-body">
+            @if (note.Solved == false)
+            {
+                <small class="text-danger">This post is still unsolved</small>
+            }
+            else
+            {
+                <small class="text-success">This post is solved</small>
+            }
+            <h5 class="card-title">Created by: @note.User.FirstName</h5>
+            <h5 class="card-title">Category: @note.Category?.SubjectName</h5>
+            <h5 class="card-title">@note.Body</h5>
+            <p class="card-text text-muted">@note.CreatedDate</p>
+            <a class="btn btn-primary" asp-controller="Note" asp-action="Details" asp-route-id="@note.Id">Check Note</a>
+
+
+            @if (note.UserId == (string)ViewData["UserId"])
+            {
+
+                <div class="dropdown" style="margin-top: 1rem">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Edit Note
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-controller="Note" asp-action="Create" asp-route-id="@note.Id">Edit Note</a></li>
+                        <li> <a class="dropdown-item" asp-controller="Note" asp-action="Remove" asp-route-id="@note.Id">Delete Note</a></li>
+                        @if (note.Solved == false)
+                        {
+                            <li>
+                                <a class="dropdown-item" asp-controller="Note" asp-action="Solved" asp-route-id="@note.Id">This question is solved</a>
+                            </li>
+                        }
+
+
+                    </ul>
+                </div>
+            }
+        </div>
+    </div>
+}
+</div>

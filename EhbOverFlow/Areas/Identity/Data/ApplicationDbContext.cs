@@ -29,7 +29,8 @@ namespace EhbOverFlow.Areas.Identity.Data
             modelBuilder.Entity<Category>()
             .HasMany(c => c.CatNotes)
             .WithOne(n => n.Category)
-            .HasForeignKey(n => n.CategoryId);
+            .HasForeignKey(n => n.CategoryId)
+            .OnDelete(DeleteBehavior.Cascade);
         }
 
     }

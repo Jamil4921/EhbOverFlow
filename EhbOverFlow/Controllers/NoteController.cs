@@ -93,9 +93,6 @@ namespace EhbOverFlow.Controllers
 
         [HttpGet]
         [Authorize]
-
-
- 
         public IActionResult Create(int? id)
         {
             ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "SubjectName");

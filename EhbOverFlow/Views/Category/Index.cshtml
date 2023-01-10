@@ -6,14 +6,18 @@
 
 
 <h1>All Categories</h1>
-<a role="button" class="btn btn-primary btn-lg" asp-controller="Category" asp-action="Create">Add new Category</a>
+@if (ViewData["IsAdmin"] != null && (bool)ViewData["IsAdmin"])
+{
+    <a role="button" class="btn btn-primary btn-lg" asp-controller="Category" asp-action="Create">Add new Category</a>
+}
+
 @foreach(var category in Model)
 {
     <div class="card" style="width: 18rem; margin-top: 30px;">
         <div class="card-body">
             <h5 class="card-title">@category.SubjectName</h5>
             <h6 class="card-subtitle mb-2 text-muted">Check all Notes with this category</h6>
-            <a role="button" class="btn btn-primary" asp-controller="Category" asp-action="Details">Check Category</a>
+            <a role="button" class="btn btn-primary" asp-controller="Category" asp-action="Details" asp-route-id="@category.Id">Check Category</a>
             @if (ViewData["IsAdmin"] != null && (bool)ViewData["IsAdmin"])
             {
                 <div class="dropdown" style="margin-top: 1rem">

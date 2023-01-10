@@ -45,10 +45,13 @@ namespace EhbOverFlow.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var category = _ehbOverFlowCategory.GetCategory(id);
-            return View(category);
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            ViewData["UserId"] = user.Id;
+            var notes = _context.notes.Include(n => n.User).Include(n => n.Category).Where(n => n.CategoryId == id);
+
+            return View(await notes.ToListAsync());
         }
 
         [HttpGet]
