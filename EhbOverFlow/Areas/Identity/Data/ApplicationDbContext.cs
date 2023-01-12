@@ -16,6 +16,7 @@ namespace EhbOverFlow.Areas.Identity.Data
 
         public DbSet<Note> notes { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<ApplicationUser> applicationUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,7 +25,8 @@ namespace EhbOverFlow.Areas.Identity.Data
             modelBuilder.Entity<Note>()
                 .HasOne(n => n.User)
                 .WithMany(n => n.Notes)
-                .HasForeignKey(n => n.UserId);
+                .HasForeignKey(n => n.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Category>()
             .HasMany(c => c.CatNotes)

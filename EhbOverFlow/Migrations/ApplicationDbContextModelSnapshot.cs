@@ -303,7 +303,8 @@ namespace EhbOverFlow.Migrations
 
                     b.HasOne("EhbOverFlow.Areas.Identity.Data.ApplicationUser", "User")
                         .WithMany("Notes")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Category");
 

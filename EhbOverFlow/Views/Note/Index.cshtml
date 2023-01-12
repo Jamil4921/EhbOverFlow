@@ -38,14 +38,14 @@
                         }else{
                              <small class="text-success">This post is solved</small>
                         }
-                <h5 class="card-title">Created by: @note.User.FirstName</h5>
+                <h5 class="card-title">Created by: @note.User?.FirstName</h5>
                 <h5 class="card-title">Category: @note.Category?.SubjectName</h5>
                 <h5 class="card-title">@note.Body</h5>
                 <p class="card-text text-muted">@note.CreatedDate</p>
                 <a class="btn btn-primary" asp-controller="Note" asp-action="Details" asp-route-id="@note.Id">Check Note</a>
 
-              
-                @if (note.UserId == (string)ViewData["UserId"])
+
+                @if (note.UserId == (string)ViewData["UserId"] || (ViewData["IsAdmin"] != null && (bool)ViewData["IsAdmin"]))
                 {
 
                     <div class="dropdown" style="margin-top: 1rem">
@@ -54,7 +54,11 @@
                         </button>
                         <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" asp-controller="Note" asp-action="Create" asp-route-id="@note.Id">Edit Note</a></li>
+                            @if (note.UserId == (string)ViewData["UserId"] || (ViewData["IsAdmin"] != null && (bool)ViewData["IsAdmin"]))
+                            {
                                 <li> <a class="dropdown-item" asp-controller="Note" asp-action="Remove" asp-route-id="@note.Id">Delete Note</a></li>
+                            }
+        
                             @if(note.Solved == false)
                             {
                                  <li>

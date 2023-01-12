@@ -1,4 +1,57 @@
-﻿@{
+﻿@model IEnumerable<UserViewModel>
+@{
 
 }
 <h1>Admin Panel</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">First name</th>
+            <th scope="col">Last name</th>
+            <th scope="col">User name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Email Confirmed</th>
+            <th scope="col">Role</th>
+            <th scope="col">Remove User</th>
+            <th scope="col">Add User to admin</th>
+            
+            
+
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.User.FirstName</td>
+                <td>@user.User.LastName</td>
+                <td>@user.User.UserName</td>
+                <td>@user.User.Email</td>
+                <td>@user.User.EmailConfirmed</td>
+                <td>@user.Role</td>
+                @if (user.User.Id == (string)ViewData["UserId"])
+                {
+                    <td>
+
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <a role="button" class="btn btn-primary" asp-controller="Admin" asp-action="Remove" asp-route-id="@user.User.Id">Delete User</a>
+                    </td>
+                }
+                else
+                @if (!user.IsAdmin)
+                {
+                    <td>
+                        <a role="button" class="btn btn-primary" asp-controller="Admin" asp-action="AdminRole" asp-route-id="@user.User.Id">Add User to admin role</a>
+                    </td>
+                }
+                   
+            </tr>
+         }
+    </tbody>
+</table>

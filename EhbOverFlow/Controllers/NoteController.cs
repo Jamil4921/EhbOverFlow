@@ -31,6 +31,7 @@ namespace EhbOverFlow.Controllers
             _fileManager = fileManager;
             _ehbOverFlowCategory=ehbOverFlowCategory;
         }
+         
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Index(string sort, string searchField)
@@ -38,7 +39,10 @@ namespace EhbOverFlow.Controllers
             
             var user = await _userManager.GetUserAsync(HttpContext.User);
             ViewData["UserId"] = user.Id;
-            
+
+            var isAdmin = await _userManager.IsInRoleAsync(user, "UserAdministrator");
+
+            ViewData["IsAdmin"] = isAdmin;
 
             ViewData["GetTitleNote"] = searchField;
             var noteQuery = from n in _context.notes select n;
@@ -64,6 +68,7 @@ namespace EhbOverFlow.Controllers
 
             if (sort == "allnotes")
             {
+                
                 notes = _context.notes.Include(n => n.User).Include(c => c.Category);
                 return View(await notes.ToListAsync());
             }
