@@ -1,5 +1,6 @@
 ﻿using EhbOverFlow.Areas.Identity.Data;
 using EhbOverFlow.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace EhbOverFlow.Data.Repository
@@ -25,7 +26,7 @@ namespace EhbOverFlow.Data.Repository
 
         public Note GetNote(int id)
         {
-            return _ehbOverFlowDbContext.notes.FirstOrDefault(n => n.Id == id);
+            return _ehbOverFlowDbContext.notes.Include(n => n.MainComments).ThenInclude(mc => mc.SubComments).FirstOrDefault(n => n.Id == id);
         }
 
         public void RemoveNote(int id)
@@ -45,6 +46,11 @@ namespace EhbOverFlow.Data.Repository
                 return true;
             }
             return false;
+        }
+
+        public void AddSubComment(SubComment comment)
+        {
+            _ehbOverFlowDbContext.subComments.Add(comment);
         }
     }
 }

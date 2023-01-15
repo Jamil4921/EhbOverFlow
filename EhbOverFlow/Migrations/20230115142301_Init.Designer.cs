@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EhbOverFlow.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230112154000_init")]
-    partial class init
+    [Migration("20230115142301_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -114,6 +114,31 @@ namespace EhbOverFlow.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("EhbOverFlow.Models.MainComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("NoteId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NoteId");
+
+                    b.ToTable("mainComments");
+                });
+
             modelBuilder.Entity("EhbOverFlow.Models.Note", b =>
                 {
                     b.Property<int>("Id")
@@ -157,6 +182,31 @@ namespace EhbOverFlow.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("notes");
+                });
+
+            modelBuilder.Entity("EhbOverFlow.Models.SubComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MainCommentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MainCommentId");
+
+                    b.ToTable("subComments");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -296,6 +346,13 @@ namespace EhbOverFlow.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("EhbOverFlow.Models.MainComment", b =>
+                {
+                    b.HasOne("EhbOverFlow.Models.Note", null)
+                        .WithMany("MainComments")
+                        .HasForeignKey("NoteId");
+                });
+
             modelBuilder.Entity("EhbOverFlow.Models.Note", b =>
                 {
                     b.HasOne("EhbOverFlow.Models.Category", "Category")
@@ -311,6 +368,15 @@ namespace EhbOverFlow.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("EhbOverFlow.Models.SubComment", b =>
+                {
+                    b.HasOne("EhbOverFlow.Models.MainComment", null)
+                        .WithMany("SubComments")
+                        .HasForeignKey("MainCommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -372,6 +438,16 @@ namespace EhbOverFlow.Migrations
             modelBuilder.Entity("EhbOverFlow.Models.Category", b =>
                 {
                     b.Navigation("CatNotes");
+                });
+
+            modelBuilder.Entity("EhbOverFlow.Models.MainComment", b =>
+                {
+                    b.Navigation("SubComments");
+                });
+
+            modelBuilder.Entity("EhbOverFlow.Models.Note", b =>
+                {
+                    b.Navigation("MainComments");
                 });
 #pragma warning restore 612, 618
         }

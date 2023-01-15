@@ -23,6 +23,33 @@
             <p class="card-text"><small class="text-muted">@Model.CreatedDate</small></p>
             <h5 class="card-title">@Model.Title</h5>
             <p class="card-text">@Model.Body</p>
+            @{
+            await Html.RenderPartialAsync("_MainComment", new CommentViewModel { NoteId = Model.Id, MainCommentId = 0 });
+            }
+            @foreach (var c in Model.MainComments)
+                {
+                <div class="card" style="margin-top: 25px">
+                    <div class="card-body">
+                        <h5 class="card-title">@c.Message</h5>
+                        <p class="card-text">@c.Created</p>
+                    </div>
+                     @{
+                        await Html.RenderPartialAsync("_MainComment", new CommentViewModel { NoteId = Model.Id, MainCommentId = c.Id });
+                      }
+                    @foreach(var sc in c.SubComments)
+                    {
+                       <div class="card" style="margin-left: 25px; margin-top: 25px; margin-bottom: 25px;">
+                        <div class="card-body">
+                            <h5 class="card-title">@sc.Message</h5>
+                            <p class="card-text">@sc.Created</p>
+                        </div>
+                       </div>
+                    }
+                    
+                </div>
+
+                }
+
         </div>
     </div>
 </div>

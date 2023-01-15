@@ -10,6 +10,7 @@ namespace EhbOverFlow.Data.Repository
         void RemoveNote(int id);
         void UpdateNote(Note note);
 
+        void AddSubComment(SubComment comment);
         Task<bool> SaveChangesAsync();
     }
 }

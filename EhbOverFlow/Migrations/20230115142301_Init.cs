@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EhbOverFlow.Migrations
 {
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -201,6 +201,47 @@ namespace EhbOverFlow.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "mainComments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NoteId = table.Column<int>(type: "int", nullable: true),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_mainComments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_mainComments_notes_NoteId",
+                        column: x => x.NoteId,
+                        principalTable: "notes",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "subComments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MainCommentId = table.Column<int>(type: "int", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_subComments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_subComments_mainComments_MainCommentId",
+                        column: x => x.MainCommentId,
+                        principalTable: "mainComments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -241,6 +282,11 @@ namespace EhbOverFlow.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_mainComments_NoteId",
+                table: "mainComments",
+                column: "NoteId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_notes_CategoryId",
                 table: "notes",
                 column: "CategoryId");
@@ -249,6 +295,11 @@ namespace EhbOverFlow.Migrations
                 name: "IX_notes_UserId",
                 table: "notes",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_subComments_MainCommentId",
+                table: "subComments",
+                column: "MainCommentId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -269,10 +320,16 @@ namespace EhbOverFlow.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "notes");
+                name: "subComments");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "mainComments");
+
+            migrationBuilder.DropTable(
+                name: "notes");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

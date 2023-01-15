@@ -213,6 +213,40 @@ namespace EhbOverFlow.Controllers
             var mime = image.Substring(image.LastIndexOf(".") + 1);
             return new FileStreamResult(_fileManager.ImageStream(image), $"image/{mime}");
         }
+        [HttpPost]
+        public async Task<IActionResult> Comment(CommentViewModel cvm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Details", new { id = cvm.NoteId });
+            }
+            var note = _ehbOverFlowNote.GetNote(cvm.NoteId);
+            if(cvm.MainCommentId == 0)
+            {
+                note.MainComments = note.MainComments ?? new List<MainComment>();
+                note.MainComments.Add(new MainComment
+                {
+                    Message = cvm.Message,
+                    Created = DateTime.Now,
+                   
 
+
+                });
+                _ehbOverFlowNote.UpdateNote(note);
+            }
+            else
+            {
+                var comment = new SubComment
+                {
+                    MainCommentId = cvm.MainCommentId,
+                    Message = cvm.Message,
+                    Created = DateTime.Now,
+                   
+                };
+                _ehbOverFlowNote.AddSubComment(comment);
+            }
+            await _ehbOverFlowNote.SaveChangesAsync();
+            return RedirectToAction("Details", new { id = cvm.NoteId });
+        }
     }
 }

@@ -17,6 +17,8 @@ namespace EhbOverFlow.Areas.Identity.Data
         public DbSet<Note> notes { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<ApplicationUser> applicationUsers { get; set; }
+        public DbSet<MainComment> mainComments { get; set; }
+        public DbSet<SubComment> subComments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
