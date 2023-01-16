@@ -20,6 +20,7 @@
             }else{
                 <small class="text-success">This post is solved</small>
             }
+            <h5>@Model.User?.FirstName</h5>
             <p class="card-text"><small class="text-muted">@Model.CreatedDate</small></p>
             <h5 class="card-title">@Model.Title</h5>
             <p class="card-text">@Model.Body</p>
@@ -30,6 +31,7 @@
                 {
                 <div class="card" style="margin-top: 25px">
                     <div class="card-body">
+                        <h5>@c.User?.FirstName</h5>
                         <h5 class="card-title">@c.Message</h5>
                         <p class="card-text">@c.Created</p>
                     </div>
@@ -40,6 +42,7 @@
                     {
                        <div class="card" style="margin-left: 25px; margin-top: 25px; margin-bottom: 25px;">
                         <div class="card-body">
+                                <h5>@c.User?.UserName</h5>
                             <h5 class="card-title">@sc.Message</h5>
                             <p class="card-text">@sc.Created</p>
                         </div>

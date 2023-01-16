@@ -92,7 +92,10 @@ namespace EhbOverFlow.Controllers
         [HttpGet]
         public IActionResult Details(int id)
         {
+
             var note = _ehbOverFlowNote.GetNote(id);
+            
+            
             return View(note);
         }
 
@@ -100,15 +103,21 @@ namespace EhbOverFlow.Controllers
         [Authorize]
         public IActionResult Create(int? id)
         {
+
+            
+
             ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "SubjectName");
             var selectedCategory = _context.Categories.Find(id);
+
 
             if (id == null)
             {
                 return View(new NoteViewModel());
+                
             }
             else
             {
+
    
                 var note = _ehbOverFlowNote.GetNote((int)id);
                
@@ -124,6 +133,7 @@ namespace EhbOverFlow.Controllers
                     CategoryId = selectedCategory?.Id
                 });
             }
+           
 
         }
 
@@ -132,6 +142,8 @@ namespace EhbOverFlow.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Body,CreatedDate,Image,CategoryId")] NoteViewModel nvm)
         {
+
+            
             ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "SubjectName");
 
             var note = new Note
@@ -144,7 +156,7 @@ namespace EhbOverFlow.Controllers
                 CategoryId = nvm.CategoryId
 
 
-        };
+            };
 
             
        
@@ -214,21 +226,25 @@ namespace EhbOverFlow.Controllers
             return new FileStreamResult(_fileManager.ImageStream(image), $"image/{mime}");
         }
         [HttpPost]
-        public async Task<IActionResult> Comment(CommentViewModel cvm)
+        public async Task<IActionResult> Comment([Bind("NoteId,MainCommentId,Created,Message")] CommentViewModel cvm)
         {
-            if (!ModelState.IsValid)
-            {
-                return RedirectToAction("Details", new { id = cvm.NoteId });
-            }
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+
+
+
             var note = _ehbOverFlowNote.GetNote(cvm.NoteId);
-            if(cvm.MainCommentId == 0)
+            note.User = user;
+            if (cvm.MainCommentId == 0)
             {
                 note.MainComments = note.MainComments ?? new List<MainComment>();
+                
                 note.MainComments.Add(new MainComment
                 {
                     Message = cvm.Message,
                     Created = DateTime.Now,
-                   
+                    User= cvm.User,
+                    UserId= cvm.UserId
 
 
                 });
@@ -241,11 +257,14 @@ namespace EhbOverFlow.Controllers
                     MainCommentId = cvm.MainCommentId,
                     Message = cvm.Message,
                     Created = DateTime.Now,
+                    UserId = cvm.UserId,
+                    User = user
                    
                 };
                 _ehbOverFlowNote.AddSubComment(comment);
             }
             await _ehbOverFlowNote.SaveChangesAsync();
+
             return RedirectToAction("Details", new { id = cvm.NoteId });
         }
     }

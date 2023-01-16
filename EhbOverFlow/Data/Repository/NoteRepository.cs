@@ -26,7 +26,7 @@ namespace EhbOverFlow.Data.Repository
 
         public Note GetNote(int id)
         {
-            return _ehbOverFlowDbContext.notes.Include(n => n.MainComments).ThenInclude(mc => mc.SubComments).FirstOrDefault(n => n.Id == id);
+            return _ehbOverFlowDbContext.notes.Include(u => u.User).Include(n => n.MainComments).ThenInclude(mc => mc.SubComments).FirstOrDefault(n => n.Id == id);
         }
 
         public void RemoveNote(int id)
