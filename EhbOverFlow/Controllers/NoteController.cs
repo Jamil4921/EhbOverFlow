@@ -228,26 +228,31 @@ namespace EhbOverFlow.Controllers
         [HttpPost]
         public async Task<IActionResult> Comment([Bind("NoteId,MainCommentId,Created,Message")] CommentViewModel cvm)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            
 
 
 
 
             var note = _ehbOverFlowNote.GetNote(cvm.NoteId);
-            note.User = user;
+            
             if (cvm.MainCommentId == 0)
             {
                 note.MainComments = note.MainComments ?? new List<MainComment>();
                 
-                note.MainComments.Add(new MainComment
+                var mainComment = new MainComment
                 {
                     Message = cvm.Message,
                     Created = DateTime.Now,
-                    User= cvm.User,
-                    UserId= cvm.UserId
+                 
 
 
-                });
+                };
+
+                if (User.Identity.IsAuthenticated)
+                {
+                    mainComment.UserName = User.Identity.Name;
+                }
+                note.MainComments.Add(mainComment);
                 _ehbOverFlowNote.UpdateNote(note);
             }
             else
@@ -257,10 +262,15 @@ namespace EhbOverFlow.Controllers
                     MainCommentId = cvm.MainCommentId,
                     Message = cvm.Message,
                     Created = DateTime.Now,
-                    UserId = cvm.UserId,
-                    User = user
+                   
                    
                 };
+
+                if (User.Identity.IsAuthenticated)
+                {
+                    comment.UserName = User.Identity.Name;
+                }
+
                 _ehbOverFlowNote.AddSubComment(comment);
             }
             await _ehbOverFlowNote.SaveChangesAsync();
