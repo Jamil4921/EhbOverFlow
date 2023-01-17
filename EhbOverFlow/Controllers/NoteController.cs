@@ -230,9 +230,6 @@ namespace EhbOverFlow.Controllers
         {
             
 
-
-
-
             var note = _ehbOverFlowNote.GetNote(cvm.NoteId);
             
             if (cvm.MainCommentId == 0)
@@ -244,8 +241,6 @@ namespace EhbOverFlow.Controllers
                     Message = cvm.Message,
                     Created = DateTime.Now,
                  
-
-
                 };
 
                 if (User.Identity.IsAuthenticated)
@@ -262,8 +257,7 @@ namespace EhbOverFlow.Controllers
                     MainCommentId = cvm.MainCommentId,
                     Message = cvm.Message,
                     Created = DateTime.Now,
-                   
-                   
+
                 };
 
                 if (User.Identity.IsAuthenticated)
