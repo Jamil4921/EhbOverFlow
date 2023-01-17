@@ -271,5 +271,32 @@ namespace EhbOverFlow.Controllers
 
             return RedirectToAction("Details", new { id = cvm.NoteId });
         }
+        [HttpGet]
+        public async Task<IActionResult> Like(int id)
+        {
+           
+            var comment = await _context.mainComments.FindAsync(id);
+            comment.Like += 1;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+
+            //if (comment == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //comment.Like += 1;
+
+            //_context.Update(comment);
+            //await _context.SaveChangesAsync();
+
+            //return RedirectToAction("Index");
+
+            //var note = _ehbOverFlowNote.GetNote(id);
+            //note.Solved = true;
+            //await _ehbOverFlowNote.SaveChangesAsync();
+            //return RedirectToAction("Index");
+
+        }
     }
 }

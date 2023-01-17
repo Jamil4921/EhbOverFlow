@@ -11,7 +11,8 @@ namespace EhbOverFlow.Models
         [Display(Name = "Comment")]
         public string Message { get; set; } = "";
         public DateTime Created { get; set; }
-
+        public int? Like { get; set; } = 0;
+        public int? Dislike { get; set; } = 0;
         public string? UserName { get; set; } = "";
         public string? UserId { get; set; }
         public ApplicationUser? User { get; set; }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EhbOverFlow.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230116185951_init")]
+    [Migration("20230117140646_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -125,6 +125,12 @@ namespace EhbOverFlow.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("Dislike")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Like")
+                        .HasColumnType("int");
+
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -202,6 +208,12 @@ namespace EhbOverFlow.Migrations
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("Dislike")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Like")
+                        .HasColumnType("int");
 
                     b.Property<int>("MainCommentId")
                         .HasColumnType("int");

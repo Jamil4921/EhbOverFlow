@@ -34,6 +34,8 @@
                         <h5>@c.UserName</h5>
                         <h5 class="card-title">@c.Message</h5>
                         <p class="card-text">@c.Created</p>
+                        <a  asp-controller="Note" asp-action="Like" asp-route-id="@c.Id">Like</a>
+                        <p>@c.Like</p>
                     </div>
                      @{
                         await Html.RenderPartialAsync("_MainComment", new CommentViewModel { NoteId = Model.Id, MainCommentId = c.Id });
