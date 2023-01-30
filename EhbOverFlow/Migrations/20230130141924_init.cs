@@ -231,6 +231,31 @@ namespace EhbOverFlow.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "likes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MainCommentId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_likes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_likes_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_likes_mainComments_MainCommentId",
+                        column: x => x.MainCommentId,
+                        principalTable: "mainComments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "subComments",
                 columns: table => new
                 {
@@ -300,6 +325,16 @@ namespace EhbOverFlow.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_likes_MainCommentId",
+                table: "likes",
+                column: "MainCommentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_likes_UserId",
+                table: "likes",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_mainComments_NoteId",
                 table: "mainComments",
                 column: "NoteId");
@@ -346,6 +381,9 @@ namespace EhbOverFlow.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "likes");
 
             migrationBuilder.DropTable(
                 name: "subComments");

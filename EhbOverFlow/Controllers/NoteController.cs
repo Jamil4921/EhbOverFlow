@@ -92,7 +92,6 @@ namespace EhbOverFlow.Controllers
         [HttpGet]
         public IActionResult Details(int id)
         {
-
             var note = _ehbOverFlowNote.GetNote(id);
             
             
@@ -198,6 +197,8 @@ namespace EhbOverFlow.Controllers
                 return View(note);
             }
 
+           
+
         }
 
         [HttpGet]
@@ -243,6 +244,12 @@ namespace EhbOverFlow.Controllers
                  
                 };
 
+                if (string.IsNullOrEmpty(cvm.Message))
+                {
+                    ModelState.AddModelError("Message", "Please enter a message");
+                    return View(cvm);
+                }
+
                 if (User.Identity.IsAuthenticated)
                 {
                     mainComment.UserName = User.Identity.Name;
@@ -265,6 +272,8 @@ namespace EhbOverFlow.Controllers
                     comment.UserName = User.Identity.Name;
                 }
 
+
+
                 _ehbOverFlowNote.AddSubComment(comment);
             }
             await _ehbOverFlowNote.SaveChangesAsync();
@@ -276,27 +285,34 @@ namespace EhbOverFlow.Controllers
         {
            
             var comment = await _context.mainComments.FindAsync(id);
-            comment.Like += 1;
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            var userId = _userManager.GetUserId(HttpContext.User);
+            var like = await _context.likes.FirstOrDefaultAsync(l => l.MainCommentId == id && l.UserId == userId);
 
-            //if (comment == null)
-            //{
-            //    return NotFound();
-            //}
+            if (like != null)
+            {
+                return BadRequest("You already liked");
 
-            //comment.Like += 1;
+            }
+            else
+            {
+                
+                comment.Like += 1;
+                await _context.SaveChangesAsync();
 
-            //_context.Update(comment);
-            //await _context.SaveChangesAsync();
+                
+                _context.likes.Add(new Likes
+                {
+                    MainCommentId = id,
+                    UserId = userId
+                });
+                await _context.SaveChangesAsync();
 
-            //return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
 
-            //var note = _ehbOverFlowNote.GetNote(id);
-            //note.Solved = true;
-            //await _ehbOverFlowNote.SaveChangesAsync();
-            //return RedirectToAction("Index");
 
         }
+
+        
     }
 }

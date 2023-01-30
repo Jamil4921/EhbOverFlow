@@ -10,7 +10,7 @@ namespace EhbOverFlow.Models
         [Display(Name = "Subject")]
         public string SubjectName { get; set; } = "";
 
-        public virtual List<Note> CatNotes { get; set; }
+        public virtual List<Note>? CatNotes { get; set; }
 
     }
 }

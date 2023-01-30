@@ -20,6 +20,8 @@ namespace EhbOverFlow.Areas.Identity.Data
         public DbSet<MainComment> mainComments { get; set; }
         public DbSet<SubComment> subComments { get; set; }
 
+        public DbSet<Likes> likes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

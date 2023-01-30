@@ -1,7 +1,7 @@
 ﻿@model Note
 
 @{
-
+    
 }
 
 
@@ -34,7 +34,7 @@
                         <h5>@c.UserName</h5>
                         <h5 class="card-title">@c.Message</h5>
                         <p class="card-text">@c.Created</p>
-                        <a  asp-controller="Note" asp-action="Like" asp-route-id="@c.Id">Like</a>
+                        <a asp-controller="Note" asp-action="Like" asp-route-id="@c.Id">Like</a>
                         <p>@c.Like</p>
                     </div>
                      @{
