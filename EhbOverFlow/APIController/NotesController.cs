@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EhbOverFlow.Areas.Identity.Data;
 using EhbOverFlow.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace EhbOverFlow.APIController
 {
@@ -22,6 +24,7 @@ namespace EhbOverFlow.APIController
         }
 
         // GET: api/Notes
+        [Authorize(Roles = "UserAdministrator, User")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Note>>> Getnotes()
         {
@@ -29,6 +32,7 @@ namespace EhbOverFlow.APIController
         }
 
         // GET: api/Notes/5
+        [Authorize(Roles = "UserAdministrator, User")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Note>> GetNote(int id)
         {
@@ -44,6 +48,7 @@ namespace EhbOverFlow.APIController
 
         // PUT: api/Notes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "UserAdministrator, User")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutNote(int id, Note note)
         {
@@ -75,6 +80,7 @@ namespace EhbOverFlow.APIController
 
         // POST: api/Notes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "UserAdministrator")]
         [HttpPost]
         public async Task<ActionResult<Note>> PostNote(Note note)
         {
@@ -85,6 +91,7 @@ namespace EhbOverFlow.APIController
         }
 
         // DELETE: api/Notes/5
+        [Authorize(Roles = "UserAdministrator, User")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteNote(int id)
         {

@@ -8,56 +8,56 @@ using Microsoft.EntityFrameworkCore;
 using EhbOverFlow.Areas.Identity.Data;
 using EhbOverFlow.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace EhbOverFlow.APIController
 {
-    [Route("api/[controller]")]        
+    [Route("api/[controller]")]
     [ApiController]
-    public class CategoriesController : ControllerBase
+    public class SubCommentsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public CategoriesController(ApplicationDbContext context)
+        public SubCommentsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
+        // GET: api/SubComments
         [Authorize(Roles = "UserAdministrator, User")]
-        // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        public async Task<ActionResult<IEnumerable<SubComment>>> GetsubComments()
         {
-            
-            return await _context.Categories.ToListAsync();
+            return await _context.subComments.ToListAsync();
         }
 
-        // GET: api/Categories/5
+        // GET: api/SubComments/5
         [Authorize(Roles = "UserAdministrator, User")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public async Task<ActionResult<SubComment>> GetSubComment(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
+            var subComment = await _context.subComments.FindAsync(id);
 
-            if (category == null)
+            if (subComment == null)
             {
                 return NotFound();
             }
 
-            return category;
+            return subComment;
         }
 
-        // PUT: api/Categories/5
+        // PUT: api/SubComments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "UserAdministrator, User")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(int id, Category category)
+        public async Task<IActionResult> PutSubComment(int id, SubComment subComment)
         {
-            if (id != category.Id)
+            if (id != subComment.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(category).State = EntityState.Modified;
+            _context.Entry(subComment).State = EntityState.Modified;
 
             try
             {
@@ -65,7 +65,7 @@ namespace EhbOverFlow.APIController
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CategoryExists(id))
+                if (!SubCommentExists(id))
                 {
                     return NotFound();
                 }
@@ -78,38 +78,38 @@ namespace EhbOverFlow.APIController
             return NoContent();
         }
 
-        // POST: api/Categories
+        // POST: api/SubComments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "UserAdministrator, User")]
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        public async Task<ActionResult<SubComment>> PostSubComment(SubComment subComment)
         {
-            _context.Categories.Add(category);
+            _context.subComments.Add(subComment);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
+            return CreatedAtAction("GetSubComment", new { id = subComment.Id }, subComment);
         }
 
-        // DELETE: api/Categories/5
+        // DELETE: api/SubComments/5
         [Authorize(Roles = "UserAdministrator, User")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteSubComment(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
+            var subComment = await _context.subComments.FindAsync(id);
+            if (subComment == null)
             {
                 return NotFound();
             }
 
-            _context.Categories.Remove(category);
+            _context.subComments.Remove(subComment);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool CategoryExists(int id)
+        private bool SubCommentExists(int id)
         {
-            return _context.Categories.Any(e => e.Id == id);
+            return _context.subComments.Any(e => e.Id == id);
         }
     }
 }

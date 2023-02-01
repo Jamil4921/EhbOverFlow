@@ -8,56 +8,57 @@ using Microsoft.EntityFrameworkCore;
 using EhbOverFlow.Areas.Identity.Data;
 using EhbOverFlow.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace EhbOverFlow.APIController
 {
-    [Route("api/[controller]")]        
+    [Route("api/[controller]")]
     [ApiController]
-    public class CategoriesController : ControllerBase
+    public class MainCommentsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public CategoriesController(ApplicationDbContext context)
+        public MainCommentsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
         [Authorize(Roles = "UserAdministrator, User")]
-        // GET: api/Categories
+
+        // GET: api/MainComments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        public async Task<ActionResult<IEnumerable<MainComment>>> GetmainComments()
         {
-            
-            return await _context.Categories.ToListAsync();
+            return await _context.mainComments.ToListAsync();
         }
 
-        // GET: api/Categories/5
+        // GET: api/MainComments/5
         [Authorize(Roles = "UserAdministrator, User")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public async Task<ActionResult<MainComment>> GetMainComment(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
+            var mainComment = await _context.mainComments.FindAsync(id);
 
-            if (category == null)
+            if (mainComment == null)
             {
                 return NotFound();
             }
 
-            return category;
+            return mainComment;
         }
 
-        // PUT: api/Categories/5
+        // PUT: api/MainComments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "UserAdministrator, User")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(int id, Category category)
+        public async Task<IActionResult> PutMainComment(int id, MainComment mainComment)
         {
-            if (id != category.Id)
+            if (id != mainComment.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(category).State = EntityState.Modified;
+            _context.Entry(mainComment).State = EntityState.Modified;
 
             try
             {
@@ -65,7 +66,7 @@ namespace EhbOverFlow.APIController
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CategoryExists(id))
+                if (!MainCommentExists(id))
                 {
                     return NotFound();
                 }
@@ -78,38 +79,38 @@ namespace EhbOverFlow.APIController
             return NoContent();
         }
 
-        // POST: api/Categories
+        // POST: api/MainComments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "UserAdministrator, User")]
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        public async Task<ActionResult<MainComment>> PostMainComment(MainComment mainComment)
         {
-            _context.Categories.Add(category);
+            _context.mainComments.Add(mainComment);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
+            return CreatedAtAction("GetMainComment", new { id = mainComment.Id }, mainComment);
         }
 
-        // DELETE: api/Categories/5
+        // DELETE: api/MainComments/5
         [Authorize(Roles = "UserAdministrator, User")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteMainComment(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
+            var mainComment = await _context.mainComments.FindAsync(id);
+            if (mainComment == null)
             {
                 return NotFound();
             }
 
-            _context.Categories.Remove(category);
+            _context.mainComments.Remove(mainComment);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool CategoryExists(int id)
+        private bool MainCommentExists(int id)
         {
-            return _context.Categories.Any(e => e.Id == id);
+            return _context.mainComments.Any(e => e.Id == id);
         }
     }
 }

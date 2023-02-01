@@ -90,6 +90,8 @@ namespace EhbOverFlow.Data
                     context.SaveChanges();
                 }
 
+               
+
                 if (!context.notes.Any())
                 {
                     var categories = context.Categories.ToList();
@@ -151,6 +153,8 @@ namespace EhbOverFlow.Data
                         ) ;
                     context.SaveChanges();
                 }
+
+
 
                 return null;
             }
