@@ -127,6 +127,7 @@ namespace EhbOverFlow.Controllers
                     Body = note.Body,
                     Solved = note.Solved,
                     CurrentImage = note.Image,
+                    CreatedDate = DateTime.Now,
                     UserId = note.UserId,
                     User = note.User,
                     CategoryId = selectedCategory?.Id
